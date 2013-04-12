@@ -1,5 +1,5 @@
 
-from time
+import time
 import RPi.GPIO as GPIO
 import AngleHelper
 
@@ -20,7 +20,7 @@ PBL = None
 # Sleep Times for Degree Turns
 deg_90 = .73
 deg_45 = .405
-inches_36 = 3.9
+time_per_inch = 3.9 / 36
 
 def setup():
     GPIO.setmode(GPIO.BCM)
@@ -129,42 +129,44 @@ def final_turn(angle):
             
 def take_pictures():
     for index in range(8):
-        print("Turn " + str(index+1))
-        right(deg_45)
         angle, distance = AngleHelper.getAngle()
         if(angle != None):
-            print("Angle was: " + str(angle))
-            print("Distance was: " + str(distance))
+            print("Angle was: " + str(angle)) + " degrees"
+            print("Distance was: " + str(distance)) + " inches"
             return angle, distance
         print("None")
+        print("Turn " + str(index+1))
+        right(deg_45)
     return None, None
     
     
 def search_room():
-    setup()
-    clearCommand()
     angle, distance = take_pictures()
     if(angle != None):
+        print "Found QR code at " + str(angle) + " degrees"
         final_turn(angle)
         if(distance > 72): 
             print "In Loop"
-            forward(((3.9*distance)/36)/2)
+            forward(time_per_inch * distance / 2)
             nAngle, nDistance = AngleHelper.getAngle()
             if(nAngle != None):
                 angle = nAngle
                 distance = nDistance
-                print "Angle was: " + str(angle)
-                print "Distance was: " + str(distance)
+                print "Angle was: " + str(angle) + " degrees"
+                print "Distance was: " + str(distance) + " inches"
                 final_turn(angle)
                 clearCommand()
             else:
                 distance = distance - (3.9*distance/36)/2
+                print "Did not find QR code 2nd time. Distance of " + str(distance)
         forward((3.9*distance)/36)
     else:
         print("Coult Not Find the QR Code")
     
     
 if __name__ == "__main__":
+    setup()
+    clearCommand()
     search_room()
     
         
