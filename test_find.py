@@ -1,5 +1,5 @@
 
-from time import time
+from time
 import RPi.GPIO as GPIO
 import AngleHelper
 
@@ -70,9 +70,7 @@ def forward(duration):
     PFR.start(51.25)
     PFL.start(49.35)
     GPIO.output(EN1, True)
-    start_time = time()
-    while(time() - start_time < duration):
-        continue
+    time.sleep(duration)
     clearCommand()
 
     
@@ -81,9 +79,7 @@ def backward(duration):
     PBR.start(51.1)
     PBL.stat(48.65)
     GPIO.output(EN1,True)
-    start_time = time()
-    while(time() - start_time < duration):
-        continue
+    time.sleep(duration)
     clearCommand()
 
     
@@ -92,9 +88,7 @@ def left(duration):
     PBL.start(48.65)
     PFR.start(51.25)
     GPIO.output(EN1,True)
-    start_time = time()
-    while(time() - start_time < duration):
-        continue
+    time.sleep(duration)
     clearCommand()
 
     
@@ -103,19 +97,13 @@ def right(duration):
     PBR.start(51.1)
     PFL.start(54.00)
     GPIO.output(EN1,True)
-    start_time = time()
-    while(time() - start_time < duration):
-        continue
+    time.sleep(duration)
     clearCommand()
-  
-  
-def stop(duration):
+
+
+def stop():
     clearCommand()
-    start_time = time()
-    while(time() - start_time < duration):
-        continue
-    clearCommand()
-  
+
   
 def final_turn(angle):
     if(angle < 0): # Left Turn
@@ -176,10 +164,8 @@ def search_room():
         print("Coult Not Find the QR Code")
     
     
-    
-search_room()    
+if __name__ == "__main__":
+    search_room()
     
         
     
-
-
